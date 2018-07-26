@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WhereAreYou</string>
+
+    <string name="introduction">Where Are You? is a software app for smartphones that cleverly uses voice recognition software and language recognition to initiate visible and audible cues to enable one to find their lost smartphone.
+Whether lost in one\'s bedroom, in the car, at work, or outside, the owner of the phone need only speak, or shout, the words, "Where Are You?" Upon recognition of these words in the smartphone\'s owner\'s voice, the app will cause the phone to ring, vibrate, and light up, serving to alert the owner to the smartphone\'s whereabouts.</string>
 </resources>

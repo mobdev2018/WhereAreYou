@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".LoginActivity"
     android:paddingLeft="40dp"
-    android:paddingRight="40dp">
+    android:paddingRight="40dp"
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,8 +41,18 @@
             android:textColorHint="@color/light_gray"
             android:hint="Password"/>
 
+        <EditText
+            android:id="@+id/etRepeatPassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
+            android:hint="Repeat Password"/>
+
         <Button
-            android:id="@+id/btn_signin"
+            android:id="@+id/btn_signup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
@@ -50,18 +60,8 @@
             android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
-            android:text="SIGN IN"/>
+            android:text="Sign Up"/>
 
-        <Button
-            android:id="@+id/btn_forgotpassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@color/transparent"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textAllCaps="false"
-            android:text="Forgot Password?"/>
 
     </LinearLayout>
 
@@ -76,16 +76,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="Don't have an account?"/>
+            android:text="Already have an account?"/>
 
         <Button
-            android:id="@+id/btn_signup"
+            android:id="@+id/btn_signin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:text="SIGN UP"/>
+            android:text="Sign In"/>
     </LinearLayout>
+
 </RelativeLayout>
