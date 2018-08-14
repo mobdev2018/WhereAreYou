@@ -16,16 +16,34 @@
         android:gravity="center_horizontal">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/logo"/>
+
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
+            android:hint="First Name"/>
+
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
+            android:hint="Last Name"/>
 
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:inputType="textEmailAddress"
             android:textColor="@color/white"
             android:textColorHint="@color/light_gray"
