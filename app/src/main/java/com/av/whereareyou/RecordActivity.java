@@ -363,6 +363,7 @@ public class RecordActivity extends Activity {
         btnStop.setVisibility(View.GONE);
         btnMic.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.VISIBLE);
+        btnTest.setVisibility(View.VISIBLE);
 
         turnOnFlash();
     }
