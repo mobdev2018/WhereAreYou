@@ -12,6 +12,7 @@ import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -98,6 +99,8 @@ public class RecordActivity extends Activity {
             });
             alert.show();
         }
+
+        getCamera();
 
     }
 
@@ -388,6 +391,14 @@ public class RecordActivity extends Activity {
             camera.startPreview();
             isFlashOn = true;
         }
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                turnOffFlash();
+            }
+        }, 1000);
     }
 
     private void turnOffFlash() {

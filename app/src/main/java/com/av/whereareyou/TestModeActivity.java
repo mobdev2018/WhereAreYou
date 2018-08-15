@@ -1,17 +1,23 @@
 package com.av.whereareyou;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,10 +25,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TestModeActivity extends Activity {
+
+    @BindView(R.id.btn_ok)
+    Button btnOK;
 
     private static final int RECORDER_BPP = 16;
     private static int RECORDER_SAMPLERATE = 8000;
@@ -33,11 +43,18 @@ public class TestModeActivity extends Activity {
 
     String testFilePath;
 
+    private Camera camera;
+    private boolean isFlashOn;
+    private boolean hasFlash;
+    private android.hardware.Camera.Parameters params;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_mode);
         ButterKnife.bind(this);
+
+        btnOK.setVisibility(View.GONE);
 
         testFilePath = getFilesDir().getAbsolutePath() + "record.wav";
 
@@ -49,8 +66,40 @@ public class TestModeActivity extends Activity {
                 e.printStackTrace();
             }
         }
-//        record();
-        speechToText();
+
+        hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+
+        if (!hasFlash) {
+            // device doesn't support flash
+            // Show alert message and close the application
+            AlertDialog alert = new AlertDialog.Builder(TestModeActivity.this)
+                    .create();
+            alert.setTitle("Error");
+            alert.setMessage("Sorry, your device doesn't support flash light!");
+            alert.setButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // closing the application
+                    finish();
+                }
+            });
+            alert.show();
+        }
+
+        getCamera();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startRecord();
+            }
+        }, 1000);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @OnClick(R.id.btn_back)
@@ -69,7 +118,7 @@ public class TestModeActivity extends Activity {
         startActivity(intent);
     }
 
-    private void record() {
+    private void startRecord() {
         int bufferSizeInBytes = AudioRecord.getMinBufferSize( RECORDER_SAMPLERATE,
                 RECORDER_CHANNELS,
                 RECORDER_AUDIO_ENCODING
@@ -225,77 +274,56 @@ public class TestModeActivity extends Activity {
     }
 
     private void stopRecord() {
-        speechToText();
-//        record();
+        btnOK.setVisibility(View.VISIBLE);
+        turnOnFlash();
     }
 
-    private void speechToText() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"com.av.whereareyou");
+    private void getCamera() {
+        if (camera == null) {
+            try {
+                camera = Camera.open();
+                params = camera.getParameters();
+            } catch (RuntimeException e) {
+                Log.e(TAG, "Camera Error. Failed to Open. Error: " + e.getMessage());
+            }
+        }
+    }
 
-        SpeechRecognizer recognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
-        RecognitionListener listener = new RecognitionListener() {
-            @Override
-            public void onResults(Bundle results) {
-                ArrayList<String> voiceResults = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                if (voiceResults == null) {
-                    Log.e(TAG, "No voice results");
-                } else {
-                    Log.d(TAG, "Printing matches: ");
-                    for (String match : voiceResults) {
-                        Log.d(TAG, "====" + match);
-                    }
-                }
+    private void turnOnFlash() {
+        Log.d(TAG, "======" + String.valueOf(isFlashOn));
+        if (!isFlashOn) {
+            if (camera == null || params == null) {
+                return;
             }
 
+            params = camera.getParameters();
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            camera.setParameters(params);
+            camera.startPreview();
+            isFlashOn = true;
+        }
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onReadyForSpeech(Bundle params) {
-                Log.d(TAG, "Ready for speech");
+            public void run() {
+                turnOffFlash();
+            }
+        }, 1000);
+    }
+
+    private void turnOffFlash() {
+        if (isFlashOn) {
+            if (camera == null || params == null) {
+                return;
             }
 
-            @Override
-            public void onError(int error) {
-                Log.d(TAG,"Error listening for speech: " + error);
-            }
-
-            @Override
-            public void onBeginningOfSpeech() {
-                Log.d(TAG, "Speech starting");
-            }
-
-            @Override
-            public void onBufferReceived(byte[] buffer) {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "Speech buffer received");
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "Speech end");
-            }
-
-            @Override
-            public void onEvent(int eventType, Bundle params) {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "Speech event");
-            }
-
-            @Override
-            public void onPartialResults(Bundle partialResults) {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "partial results");
-            }
-
-            @Override
-            public void onRmsChanged(float rmsdB) {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "RmsChanged");
-            }
-        };
-        recognizer.setRecognitionListener(listener);
-        recognizer.startListening(intent);
+            params = camera.getParameters();
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            camera.setParameters(params);
+            camera.stopPreview();
+            isFlashOn = false;
+        }
     }
 
 }
