@@ -399,7 +399,7 @@ public class RecordActivity extends Activity {
             public void run() {
                 turnOffFlash();
             }
-        }, 1000);
+        }, 500);
     }
 
     private void turnOffFlash() {

@@ -2,16 +2,22 @@ package com.av.whereareyou;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -47,6 +53,9 @@ public class TestModeActivity extends Activity {
     private boolean isFlashOn;
     private boolean hasFlash;
     private android.hardware.Camera.Parameters params;
+
+    Vibrator vib;
+    MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,6 +266,7 @@ public class TestModeActivity extends Activity {
                 tempIndex++;
 
                 Log.i(TAG, "End");
+                audioRecorder.stop();
                 stopRecord();
                 break;
             }
@@ -274,7 +284,16 @@ public class TestModeActivity extends Activity {
     }
 
     private void stopRecord() {
+
         btnOK.setVisibility(View.VISIBLE);
+
+        vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(500);
+
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Ringtone ringtone = RingtoneManager.getRingtone(this,uri);
+        ringtone.play();
+
         turnOnFlash();
     }
 
@@ -309,7 +328,7 @@ public class TestModeActivity extends Activity {
             public void run() {
                 turnOffFlash();
             }
-        }, 1000);
+        }, 500);
     }
 
     private void turnOffFlash() {
@@ -324,6 +343,8 @@ public class TestModeActivity extends Activity {
             camera.stopPreview();
             isFlashOn = false;
         }
+
+        startRecord();
     }
 
 }
