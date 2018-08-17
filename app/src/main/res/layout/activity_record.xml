@@ -49,15 +49,16 @@
         android:textColor="@color/white"
         android:text="@string/whereareyou"/>
 
-    <ImageButton
-        android:id="@+id/btn_play"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <TextView
+        android:id="@+id/txtVoice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/text2"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/play"/>
-
+        android:layout_marginTop="30dp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:text="No voice"/>
 
     <Button
         android:id="@+id/btn_test"

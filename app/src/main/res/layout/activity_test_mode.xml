@@ -53,6 +53,16 @@
             android:textSize="20sp"
             android:background="@drawable/round_border_button"/>
 
+        <TextView
+            android:id="@+id/txtVoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:text="Please say \<Where are you?\>"/>
+
     </RelativeLayout>
 
 
