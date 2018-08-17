@@ -7,4 +7,6 @@ Whether lost in one\'s bedroom, in the car, at work, or outside, the owner of th
 
     <string name="note1">NOTE: This app is to help you (the user) find your phone near you easily and farther than ever before, for example: your phone has fallen between the couch or car seats, even under the bed, etc.</string>
     <string name="note2">If you are sure you have yelled clearly and loudly enough for the app to activate press \"Submit &amp; Continue\". If you want to record again simply press \"Record Again\".</string>
+
+    <string name="saywhereareyou">Please say \"Where are you?\"</string>
 </resources>

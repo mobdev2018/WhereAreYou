@@ -61,7 +61,7 @@
             android:layout_marginBottom="10dp"
             android:textColor="@color/white"
             android:textAlignment="center"
-            android:text="Please say \<Where are you?\>"/>
+            android:text="@string/saywhereareyou"/>
 
     </RelativeLayout>
 
