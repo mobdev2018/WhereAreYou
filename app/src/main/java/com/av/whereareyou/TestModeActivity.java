@@ -260,7 +260,7 @@ public class TestModeActivity extends Activity{
             public void run() {
                 turnOffFlash();
             }
-        }, 600);
+        }, 200);
     }
 
     private void turnOffFlash() {
