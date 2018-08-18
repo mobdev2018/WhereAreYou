@@ -149,6 +149,7 @@ public class RecordActivity extends Activity {
         vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(500);
 
+
         stopRecord();
     }
 

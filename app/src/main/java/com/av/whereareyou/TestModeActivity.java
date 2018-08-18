@@ -36,6 +36,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,28 +50,21 @@ public class TestModeActivity extends Activity{
     @BindView(R.id.txtVoice)
     TextView txtVoice;
 
-    private static final int RECORDER_BPP = 16;
-    private static int RECORDER_SAMPLERATE = 8000;
-    private static int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
-    private static int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
-
     private static String TAG = "TestModeActivity";
 
     String testFilePath;
 
     private Camera camera;
-    private boolean isFlashOn;
+    private boolean isFlashOn = false;
     private boolean hasFlash;
     private android.hardware.Camera.Parameters params;
 
     DroidSpeech droidSpeech;
 
-    Vibrator vib;
     Ringtone ringtone;
 
-    private SpeechRecognizer recognizer;
-
-
+    Timer vibrationTimer = new Timer();
+    TimerTask vibrationTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,9 +174,17 @@ public class TestModeActivity extends Activity{
 
     @OnClick(R.id.btn_back)
     public void onBack(View view) {
+        droidSpeech.closeDroidSpeechOperations();
         if (ringtone.isPlaying()) {
             ringtone.stop();
         }
+
+        if (vibrationTask != null) {
+            vibrationTask.cancel();
+        }
+
+        turnOffFlash();
+
         finish();
     }
 
@@ -196,6 +199,13 @@ public class TestModeActivity extends Activity{
         if (ringtone.isPlaying()) {
             ringtone.stop();
         }
+
+        if (vibrationTask != null) {
+            vibrationTask.cancel();
+        }
+
+        turnOffFlash();
+
         Intent intent = new Intent(TestModeActivity.this, ConfirmRecordActivity.class);
         startActivity(intent);
     }
@@ -204,8 +214,15 @@ public class TestModeActivity extends Activity{
 
         btnOK.setVisibility(View.VISIBLE);
 
-        vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vib.vibrate(500);
+        vibrationTask = new TimerTask() {
+            @Override
+            public void run() {
+                Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vib.vibrate(1000);
+            }
+        };
+
+        vibrationTimer.scheduleAtFixedRate(vibrationTask, 0, 1200);
 
         ringtone.play();
 
@@ -237,13 +254,13 @@ public class TestModeActivity extends Activity{
             isFlashOn = true;
         }
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                turnOffFlash();
-            }
-        }, 500);
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                turnOffFlash();
+//            }
+//        }, 500);
     }
 
     private void turnOffFlash() {
