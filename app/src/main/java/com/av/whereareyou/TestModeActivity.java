@@ -217,6 +217,7 @@ public class TestModeActivity extends Activity{
         vibrationTask = new TimerTask() {
             @Override
             public void run() {
+                turnOnFlash();
                 Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vib.vibrate(1000);
             }
@@ -226,7 +227,6 @@ public class TestModeActivity extends Activity{
 
         ringtone.play();
 
-        turnOnFlash();
     }
 
     private void getCamera() {
@@ -254,13 +254,13 @@ public class TestModeActivity extends Activity{
             isFlashOn = true;
         }
 
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                turnOffFlash();
-//            }
-//        }, 500);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                turnOffFlash();
+            }
+        }, 600);
     }
 
     private void turnOffFlash() {
