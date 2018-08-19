@@ -65,9 +65,8 @@ public class TestModeActivity extends Activity{
 
     Ringtone ringtone;
 
-    Timer vibrationTimer = new Timer();
+    Timer vibrationTimer;
     TimerTask vibrationTask;
-    Handler turnOffHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,8 +202,8 @@ public class TestModeActivity extends Activity{
             ringtone.stop();
         }
 
-        if (vibrationTask != null) {
-            vibrationTask.cancel();
+        if (vibrationTimer != null) {
+            vibrationTimer.cancel();
         }
 
         turnOffFlash();
@@ -217,6 +216,7 @@ public class TestModeActivity extends Activity{
 
         btnOK.setVisibility(View.VISIBLE);
 
+        vibrationTimer = new Timer();
         vibrationTask = new TimerTask() {
             @Override
             public void run() {
