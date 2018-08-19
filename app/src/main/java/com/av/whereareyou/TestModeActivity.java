@@ -62,7 +62,7 @@ public class TestModeActivity extends Activity{
     private android.hardware.Camera.Parameters params;
 
     DroidSpeech droidSpeech;
-
+    Vibrator vib;
     Ringtone ringtone;
 
     Timer vibrationTimer;
@@ -109,6 +109,7 @@ public class TestModeActivity extends Activity{
 
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         ringtone = RingtoneManager.getRingtone(this,uri);
+        vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -186,6 +187,7 @@ public class TestModeActivity extends Activity{
         }
 
         turnOffFlash();
+        vib.cancel();
 
         finish();
     }
@@ -206,6 +208,7 @@ public class TestModeActivity extends Activity{
             vibrationTimer.cancel();
         }
 
+        vib.cancel();
         turnOffFlash();
 
         Intent intent = new Intent(TestModeActivity.this, ConfirmRecordActivity.class);
@@ -221,7 +224,6 @@ public class TestModeActivity extends Activity{
             @Override
             public void run() {
                 turnOnFlash();
-                Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vib.vibrate(1000);
             }
         };
