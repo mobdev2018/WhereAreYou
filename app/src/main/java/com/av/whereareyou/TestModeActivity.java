@@ -18,6 +18,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.Vibrator;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -65,6 +67,7 @@ public class TestModeActivity extends Activity{
 
     Timer vibrationTimer = new Timer();
     TimerTask vibrationTask;
+    Handler turnOffHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,13 +257,7 @@ public class TestModeActivity extends Activity{
             isFlashOn = true;
         }
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                turnOffFlash();
-            }
-        }, 200);
+        turnOffFlash();
     }
 
     private void turnOffFlash() {

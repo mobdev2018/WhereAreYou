@@ -199,13 +199,7 @@ public class RecordActivity extends Activity {
             isFlashOn = true;
         }
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                turnOffFlash();
-            }
-        }, 200);
+        turnOffFlash();
     }
 
     private void turnOffFlash() {
