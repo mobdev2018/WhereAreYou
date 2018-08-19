@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -73,7 +74,7 @@ public class RecordActivity extends Activity {
         }
 
         getCamera();
-
+        disableBeepSound();
     }
 
     @OnClick(R.id.btn_mic)
@@ -172,6 +173,11 @@ public class RecordActivity extends Activity {
         btnTest.setVisibility(View.VISIBLE);
 
         turnOnFlash();
+    }
+
+    private void disableBeepSound() {
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamMute(AudioManager.STREAM_SYSTEM, false);
     }
 
     private void getCamera() {

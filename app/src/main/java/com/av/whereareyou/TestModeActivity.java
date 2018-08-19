@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -119,6 +120,12 @@ public class TestModeActivity extends Activity{
             }
         }, 1000);
 
+        disableBeepSound();
+    }
+
+    private void disableBeepSound() {
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamMute(AudioManager.STREAM_SYSTEM, true);
     }
 
     private void startRecord() {
@@ -170,8 +177,34 @@ public class TestModeActivity extends Activity{
     }
 
     @Override
+    public void onPause() {
+        if (ringtone.isPlaying()) {
+            ringtone.stop();
+        }
+
+        if (vibrationTimer != null) {
+            vibrationTimer.cancel();
+        }
+
+        vib.cancel();
+        turnOffFlash();
+        super.onPause();
+    }
+
+    @Override
     public void onDestroy() {
         droidSpeech.closeDroidSpeechOperations();
+        if (ringtone.isPlaying()) {
+            ringtone.stop();
+        }
+
+        if (vibrationTimer != null) {
+            vibrationTimer.cancel();
+        }
+
+        vib.cancel();
+        turnOffFlash();
+
         super.onDestroy();
     }
 
