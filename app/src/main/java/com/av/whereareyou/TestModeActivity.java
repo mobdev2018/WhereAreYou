@@ -125,7 +125,23 @@ public class TestModeActivity extends Activity{
 
     private void disableBeepSound() {
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        am.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+
+        am.setStreamVolume(AudioManager.STREAM_SYSTEM, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_ALARM, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_ACCESSIBILITY, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, AudioManager.FLAG_PLAY_SOUND);
+
+    }
+
+    private void enableBeepSound() {
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        am.setStreamVolume(AudioManager.STREAM_SYSTEM, 1, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_ALARM, 1, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_ACCESSIBILITY, 1, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 1, AudioManager.FLAG_PLAY_SOUND);
     }
 
     private void startRecord() {
@@ -153,6 +169,7 @@ public class TestModeActivity extends Activity{
                 txtVoice.setText(finalSpeechResult);
                 if (finalSpeechResult.equals("where are you")) {
                     droidSpeech.closeDroidSpeechOperations();
+                    enableBeepSound();
                     detected();
                 }
             }
@@ -178,6 +195,8 @@ public class TestModeActivity extends Activity{
 
     @Override
     public void onPause() {
+        super.onPause();
+
         if (ringtone.isPlaying()) {
             ringtone.stop();
         }
@@ -188,7 +207,6 @@ public class TestModeActivity extends Activity{
 
         vib.cancel();
         turnOffFlash();
-        super.onPause();
     }
 
     @Override

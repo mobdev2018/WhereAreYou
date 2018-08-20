@@ -56,7 +56,8 @@ public class LoginActivity extends Activity {
     private void requestPermission() {
         int recordPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int modifyAudioPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);
+//        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -68,9 +69,13 @@ public class LoginActivity extends Activity {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
 
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (modifyAudioPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.MODIFY_AUDIO_SETTINGS);
         }
+
+//        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        }
 
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);

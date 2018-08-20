@@ -141,6 +141,7 @@ public class RecordActivity extends Activity {
         });
 
         droidSpeech.startDroidSpeechRecognition();
+        disableBeepSound();
     }
 
     private void detected() {
@@ -177,7 +178,12 @@ public class RecordActivity extends Activity {
 
     private void disableBeepSound() {
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        am.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+
+        am.setStreamVolume(AudioManager.STREAM_SYSTEM, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_ALARM, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_ACCESSIBILITY, 0, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, AudioManager.FLAG_PLAY_SOUND);
     }
 
     private void getCamera() {
