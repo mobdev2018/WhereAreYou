@@ -256,6 +256,10 @@ public class TestModeActivity extends Activity{
             ringtone.stop();
         }
 
+        if (vibrationTask != null) {
+            vibrationTask.cancel();
+        }
+
         if (vibrationTimer != null) {
             vibrationTimer.cancel();
         }
