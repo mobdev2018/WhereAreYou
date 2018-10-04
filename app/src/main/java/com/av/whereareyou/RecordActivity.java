@@ -123,7 +123,7 @@ public class RecordActivity extends Activity {
             public void onDroidSpeechFinalResult(String finalSpeechResult) {
                 Log.d(TAG, finalSpeechResult);
                 txtVoice.setText("You said <" + finalSpeechResult + ">");
-                if (finalSpeechResult.equals("where are you")) {
+                if (finalSpeechResult.equals("hello")) {
                     droidSpeech.closeDroidSpeechOperations();
                     detected();
                 }
@@ -150,7 +150,6 @@ public class RecordActivity extends Activity {
 
         vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(500);
-
 
         stopRecord();
     }
