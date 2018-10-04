@@ -123,7 +123,7 @@ public class RecordActivity extends Activity {
             public void onDroidSpeechFinalResult(String finalSpeechResult) {
                 Log.d(TAG, finalSpeechResult);
                 txtVoice.setText("You said <" + finalSpeechResult + ">");
-                if (finalSpeechResult.equals("hello")) {
+                if (finalSpeechResult.equals("where are you")) {
                     droidSpeech.closeDroidSpeechOperations();
                     detected();
                 }

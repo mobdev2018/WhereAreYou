@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -128,13 +129,7 @@ public class TestModeActivity extends Activity{
             e.printStackTrace();
         }
 
-        setRingtone();
-
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-        ringtone = RingtoneManager.getRingtone(this,uri);
-
-        String ringtoneTitle = ringtone.getTitle(this);
-        Toast.makeText(getApplicationContext(), "Ringtone Name : " + ringtoneTitle, Toast.LENGTH_SHORT).show();
+        ringtone = RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this));
 
         vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -194,7 +189,7 @@ public class TestModeActivity extends Activity{
             public void onDroidSpeechFinalResult(String finalSpeechResult) {
                 Log.d(TAG, finalSpeechResult);
                 txtVoice.setText(finalSpeechResult);
-                if (finalSpeechResult.equals("hello")) {
+                if (finalSpeechResult.equals("where are you")) {
                     droidSpeech.closeDroidSpeechOperations();
                     enableBeepSound();
                     detected();
@@ -358,60 +353,6 @@ public class TestModeActivity extends Activity{
             camera.setParameters(params);
             camera.stopPreview();
             isFlashOn = false;
-        }
-    }
-
-
-    private void setRingtone() {
-        AssetFileDescriptor openAssetFileDescriptor;
-        ((AudioManager) getSystemService(AUDIO_SERVICE)).setRingerMode(2);
-        File file = new File(Environment.getExternalStorageDirectory() + "/whereareyou", this.fNmae);
-
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Uri parse = Uri.parse(this.fPAth);
-        ContentResolver contentResolver = getContentResolver();
-        try {
-            openAssetFileDescriptor = contentResolver.openAssetFileDescriptor(parse, "r");
-        } catch (FileNotFoundException e2) {
-            openAssetFileDescriptor = null;
-        }
-        try {
-            byte[] bArr = new byte[1024];
-            FileInputStream createInputStream = openAssetFileDescriptor.createInputStream();
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            for (int read = createInputStream.read(bArr); read != -1; read = createInputStream.read(bArr)) {
-                fileOutputStream.write(bArr, 0, read);
-            }
-            fileOutputStream.close();
-        } catch (IOException e3) {
-            e3.printStackTrace();
-        }
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("_data", file.getAbsolutePath());
-        contentValues.put("title", "nkDroid ringtone");
-        contentValues.put("mime_type", "audio/mp3");
-        contentValues.put("_size", Long.valueOf(file.length()));
-        contentValues.put("artist", Integer.valueOf(R.string.app_name));
-        contentValues.put("is_ringtone", Boolean.valueOf(true));
-        contentValues.put("is_notification", Boolean.valueOf(false));
-        contentValues.put("is_alarm", Boolean.valueOf(false));
-        contentValues.put("is_music", Boolean.valueOf(false));
-        try {
-            Toast.makeText(this, new StringBuilder().append("Ringtone set successfully"), Toast.LENGTH_LONG).show();
-            RingtoneManager.setActualDefaultRingtoneUri(getBaseContext(), 1, contentResolver.insert(MediaStore.Audio.Media.getContentUriForPath(file.getAbsolutePath()), contentValues));
-        } catch (Throwable th) {
-            Log.d("========", th.toString());
-            Toast.makeText(this, new StringBuilder().append("Ringtone feature is not working"), Toast.LENGTH_LONG).show();
         }
     }
 
