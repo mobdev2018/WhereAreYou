@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".FlashPatternsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="50dp">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:text="Flash Patterns"/>
+
+
+        <Button
+            android:id="@+id/btn_fast"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/txtTitle"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/round_border_button"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="normal"
+            android:textAllCaps="false"
+            android:text="fast-paced/ongoing"/>
+
+        <Button
+            android:id="@+id/btn_slow"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btn_fast"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/round_border_button"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="normal"
+            android:textAllCaps="false"
+            android:text="slow-paced/steady"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>

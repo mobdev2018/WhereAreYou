@@ -1,6 +1,7 @@
 package com.av.whereareyou;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -28,6 +29,7 @@ public class RingtonesActivity extends Activity {
 
     @OnClick(R.id.btn_continue)
     public void onContinue(View view) {
-
+        Intent intent = new Intent(RingtonesActivity.this, FlashPatternsActivity.class);
+        startActivity(intent);
     }
 }
