@@ -16,7 +16,7 @@
             android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="70dp"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="24sp"
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/txtTitle"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="80dp"
             android:background="@drawable/round_border_button"
             android:textColor="@color/white"
             android:textSize="17sp"
@@ -49,6 +49,19 @@
             android:textStyle="normal"
             android:textAllCaps="false"
             android:text="slow-paced/steady"/>
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/round_border_button"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="normal"
+            android:textAllCaps="false"
+            android:text="Continue"/>
 
 
     </RelativeLayout>
