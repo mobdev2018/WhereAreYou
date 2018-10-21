@@ -45,7 +45,8 @@
             android:name=".TestModeActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".FlashPatternsActivity" />
-        <activity android:name=".ColorsActivity"></activity>
+        <activity android:name=".ColorsActivity" />
+        <activity android:name=".TestColorActivity"></activity>
     </application>
 
 </manifest>

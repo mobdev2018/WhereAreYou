@@ -1,12 +1,15 @@
 package com.av.whereareyou;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +19,9 @@ public class ColorsActivity extends Activity {
 
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+
+    @BindView(R.id.txtTitle)
+    TextView txtTitle;
 
     @BindView(R.id.btn_white)
     Button btnWhite;
@@ -76,7 +82,8 @@ public class ColorsActivity extends Activity {
 
     @OnClick(R.id.btn_continue)
     public void onContinue(View view) {
-
+        Intent intent = new Intent(ColorsActivity.this, TestColorActivity.class);
+        startActivity(intent);
     }
 
     private void selectWhite(boolean isWhite) {
@@ -84,10 +91,12 @@ public class ColorsActivity extends Activity {
             this.btnWhite.setBackgroundResource(R.drawable.black_border_button);
             this.btnContinue.setBackgroundResource(R.drawable.black_border_button);
             btnContinue.setTextColor(getResources().getColor(R.color.black, null));
+            txtTitle.setTextColor(getResources().getColor(R.color.black, null));
         } else {
             this.btnWhite.setBackgroundResource(R.drawable.white_round_button);
             this.btnContinue.setBackgroundResource(R.drawable.round_border_button);
             btnContinue.setTextColor(getResources().getColor(R.color.white, null));
+            txtTitle.setTextColor(getResources().getColor(R.color.white, null));
         }
     }
 
