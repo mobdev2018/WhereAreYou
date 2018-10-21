@@ -3,6 +3,7 @@ package com.av.whereareyou;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -107,6 +108,18 @@ public class FlashPatternsActivity extends Activity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("flashInterval", interval);
         editor.apply();
+    }
+
+    @OnClick(R.id.btn_continue)
+    public void onContinue(View view) {
+        if (flashTimer != null) {
+            flashTimer.cancel();
+        }
+
+        turnOffFlash();
+
+        Intent intent = new Intent(FlashPatternsActivity.this, ColorsActivity.class);
+        startActivity(intent);
     }
 
     private void getCamera() {
