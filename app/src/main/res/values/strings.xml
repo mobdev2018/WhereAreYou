@@ -9,4 +9,7 @@ Whether lost in one\'s bedroom, in the car, at work, or outside, the owner of th
     <string name="note2">If you are sure you have yelled clearly and loudly enough for the app to activate press \"Submit &amp; Continue\". If you want to record again simply press \"Record Again\".</string>
 
     <string name="saywhereareyou">Please say \"Where are you?\"</string>
+
+    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
+    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
 </resources>

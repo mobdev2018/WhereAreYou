@@ -3,16 +3,27 @@ package com.av.whereareyou;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +40,10 @@ public class LoginActivity extends Activity {
     EditText etEmail;
     @BindView(R.id.etPassword)
     EditText etPassword;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +59,63 @@ public class LoginActivity extends Activity {
         }
 
         requestPermission();
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @OnClick(R.id.btn_signin)
     public void onSignIn(View view) {
-        Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
-        startActivity(intent);
+
+        final String email = etEmail.getText().toString().trim();
+        final String password  = etPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        //authenticate user
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        progressBar.setVisibility(View.GONE);
+                        if (!task.isSuccessful()) {
+                            // there was an error
+                            if (password.length() < 6) {
+                                etPassword.setError(getString(R.string.minimum_password));
+                            } else {
+                                Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Login Successful!, Start tracking!", Toast.LENGTH_LONG).show();
+
+                            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", email);
+                            editor.putString("password", password);
+                            editor.apply();
+
+                            Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }).addOnFailureListener(LoginActivity.this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+                Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @OnClick(R.id.btn_signup)
