@@ -61,24 +61,18 @@ public class LoginActivity extends Activity {
         requestPermission();
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        String email = sharedPreferences.getString("email", "");
+        String password = sharedPreferences.getString("password", "");
+
+        if (!email.equals("") && !password.equals("")) {
+            signIn(email, password);
+        }
     }
 
-    @OnClick(R.id.btn_signin)
-    public void onSignIn(View view) {
-
-        final String email = etEmail.getText().toString().trim();
-        final String password  = etPassword.getText().toString().trim();
-
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+    private void signIn(final String email, final String password) {
         progressBar.setVisibility(View.VISIBLE);
 
         //authenticate user
@@ -116,6 +110,26 @@ public class LoginActivity extends Activity {
                 Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @OnClick(R.id.btn_signin)
+    public void onSignIn(View view) {
+
+        String email = etEmail.getText().toString().trim();
+        String password  = etPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        signIn(email, password);
+
     }
 
     @OnClick(R.id.btn_signup)
