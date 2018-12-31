@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.av.whereareyou.util.BatterySaverModeUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -47,6 +48,8 @@ public class IntroActivity extends Activity {
 
         Intent intent = new Intent(getApplicationContext(), TrackLocationService.class);
         getApplication().startService(intent);
+
+        BatterySaverModeUtil.enable();
     }
 
     @OnClick(R.id.btn_continue)
