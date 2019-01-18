@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -202,29 +204,15 @@ public class LoginActivity extends Activity {
 
 
     public void requestRegisterToUnmonitoredApps() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String pkg = getPackageName();
-
-            if (!Settings.System.canWrite(getApplicationContext())) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + pkg));
-                startActivityForResult(intent, 200);
-            }
-
-            PowerManager pm = getSystemService(PowerManager.class);
-            if (!pm.isIgnoringBatteryOptimizations(pkg)) {
+            PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+            if (!pm.isPowerSaveMode()) {
                 Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + getPackageName()));
+                intent.setAction(Settings.ACTION_BATTERY_SAVER_SETTINGS);
                 startActivityForResult(intent, MY_IGNORE_OPTIMIZATION_REQUEST);
             }
 
-            for (Intent intent : POWERMANAGER_INTENTS) {
-                if (getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
-                    // show dialog to ask user action
-                    startActivity(intent);
-                    break;
-                }
-            }
         }
 
     }
@@ -234,13 +222,13 @@ public class LoginActivity extends Activity {
         if (requestCode == MY_IGNORE_OPTIMIZATION_REQUEST) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-                boolean isIgnoringBatteryOptimizations = pm.isIgnoringBatteryOptimizations(getPackageName());
-                if (isIgnoringBatteryOptimizations) {
+                boolean isPowerSaveMode = pm.isPowerSaveMode();
+                if (isPowerSaveMode) {
                     // Ignoring battery optimization
-                    Log.d("MainActivity", "Ignoring battery optimization");
+                    Log.d("MainActivity", "Enabled power save mode.");
                 } else {
                     // Not ignoring battery optimization
-                    Log.d("MainActivity", "Not ignoring battery optimization");
+                    Log.d("MainActivity", "Disabled power save mode.");
                 }
             }
         }
