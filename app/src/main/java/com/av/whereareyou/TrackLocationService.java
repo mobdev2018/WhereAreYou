@@ -67,7 +67,7 @@ public class TrackLocationService extends Service {
 
         try {
             mLocationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, 60000, 1,
+                    LocationManager.GPS_PROVIDER, 30000, 1,
                     mLocationListeners[0]);
 
         } catch (java.lang.SecurityException ex) {
@@ -78,7 +78,7 @@ public class TrackLocationService extends Service {
 
         try {
             mLocationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, 60000, 1,
+                    LocationManager.NETWORK_PROVIDER, 30000, 1,
                     mLocationListeners[1]);
         } catch (java.lang.SecurityException ex) {
             Log.i(Location_TAG, "fail to request location update, ignore", ex);
