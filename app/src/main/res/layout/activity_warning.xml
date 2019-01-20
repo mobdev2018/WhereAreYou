@@ -6,27 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".WarningActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
         android:paddingLeft="50dp"
-        android:paddingRight="50dp">
+        android:paddingRight="50dp"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/warningText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="100dp"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="80dp"
             android:textColor="@color/white"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:text="Do you want to enable power saving mode?"/>
+            android:text="@string/warning_text"/>
+        <TextView
+            android:id="@+id/warningQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:text="@string/warning_question"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/warningText">
+            android:layout_marginTop="50dp">
             <Button
                 android:id="@+id/btnNo"
                 android:layout_width="wrap_content"
@@ -48,5 +58,5 @@
                 android:text="Yes"/>
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
