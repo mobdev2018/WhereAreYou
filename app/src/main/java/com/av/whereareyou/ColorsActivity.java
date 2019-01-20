@@ -82,7 +82,8 @@ public class ColorsActivity extends Activity {
 
     @OnClick(R.id.btn_continue)
     public void onContinue(View view) {
-        Intent intent = new Intent(ColorsActivity.this, TestColorActivity.class);
+//        Intent intent = new Intent(ColorsActivity.this, TestColorActivity.class);
+        Intent intent = new Intent(ColorsActivity.this, WarningActivity.class);
         startActivity(intent);
     }
 

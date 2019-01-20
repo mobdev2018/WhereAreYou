@@ -22,14 +22,6 @@ public class WarningActivity extends Activity {
         setContentView(R.layout.activity_warning);
         ButterKnife.bind(this);
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-//            if (pm.isPowerSaveMode()) {
-//                Intent intent = new Intent(WarningActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        }
     }
 
     @OnClick(R.id.btnYes)
@@ -47,7 +39,7 @@ public class WarningActivity extends Activity {
 
     @OnClick(R.id.btnNo)
     public void dismissWaning(View view) {
-        Intent intent = new Intent(WarningActivity.this, LoginActivity.class);
+        Intent intent = new Intent(WarningActivity.this, TestColorActivity.class);
         startActivity(intent);
         finish();
     }
@@ -56,7 +48,7 @@ public class WarningActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BATTERY_SAVER_REQUEST) {
-            Intent intent = new Intent(WarningActivity.this, LoginActivity.class);
+            Intent intent = new Intent(WarningActivity.this, TestColorActivity.class);
             startActivity(intent);
             finish();
         }

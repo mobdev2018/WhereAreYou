@@ -12,6 +12,6 @@ Whether lost in one\'s bedroom, in the car, at work, or outside, the owner of th
 
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
     <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
-    <string name="warning_text">Warnings: Since this app is constantly working to activate at any given time to the sound of your voice when your phone is missing near you. It is suggested you set your phone on power saving mode to conserve battery life.</string>
+    <string name="warning_text">Warning: Since this app is constantly working to activate at any given time to the sound of your voice when your phone is missing somewhere near you....it is suggested you set your phone on power saving mode to conserve battery life.</string>
     <string name="warning_question">Do you want to enable power saving mode?</string>
 </resources>
