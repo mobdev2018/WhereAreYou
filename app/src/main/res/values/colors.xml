@@ -14,5 +14,7 @@
     <color name="pink">#EC008C</color>
     <color name="red">#ED1C24</color>
     <color name="green">#197B30</color>
+    <color name="menu_list_bg">#f5f5f5</color>
+    <color name="gray_selected">#d9d9d9</color>
 
 </resources>

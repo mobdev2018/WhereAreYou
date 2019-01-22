@@ -14,17 +14,27 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.vikramezhil.droidspeech.DroidSpeech;
 import com.vikramezhil.droidspeech.OnDSListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,6 +44,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TestColorActivity extends Activity {
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.slidermenu)
+    View mDrawerMenu;
+    @BindView(R.id.list_slidermenu)
+    ListView mDrawerList;
 
     @BindView(R.id.contentView)
     View contentView;
@@ -48,6 +65,7 @@ public class TestColorActivity extends Activity {
     ImageButton btnSettings;
 
     private static String TAG = "TestColorActivity";
+    private FirebaseAuth firebaseAuth;
 
     String testFilePath;
 
@@ -66,11 +84,15 @@ public class TestColorActivity extends Activity {
     private String fNmae = "audio.mp3";
     private String fPAth = "android.resource://com.av.whereareyou/raw/audio";
 
+    ArrayList<HashMap<String, String>> listMenu = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_color);
         ButterKnife.bind(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         String color = sharedPreferences.getString("color", "blue");
@@ -143,6 +165,8 @@ public class TestColorActivity extends Activity {
         }, 1000);
 
         disableBeepSound();
+
+        setMenuList();
     }
 
     private void disableBeepSound() {
@@ -270,7 +294,11 @@ public class TestColorActivity extends Activity {
 
     @OnClick(R.id.btn_settings)
     public void onSettins(View view) {
-
+        if (mDrawerLayout.isDrawerOpen(mDrawerMenu)) {
+            mDrawerLayout.closeDrawer(mDrawerMenu);
+        } else {
+            mDrawerLayout.openDrawer(mDrawerMenu);
+        }
     }
 
     @OnClick(R.id.btn_ok)
@@ -343,6 +371,7 @@ public class TestColorActivity extends Activity {
         turnOffFlash();
     }
 
+
     private void turnOffFlash() {
         if (isFlashOn) {
             if (camera == null || params == null) {
@@ -379,5 +408,156 @@ public class TestColorActivity extends Activity {
         }
     }
 
+
+    private void setMenuList() {
+        listMenu.clear();
+
+        HashMap<String, String> hashMap1 = new HashMap<>();
+        hashMap1.put("category", "Flashes");
+
+        HashMap<String, String> hashMap2 = new HashMap<>();
+        hashMap2.put("category", "Color");
+
+        HashMap<String, String> hashMap3 = new HashMap<>();
+        hashMap3.put("category", "Ringtones");
+
+        HashMap<String, String> hashMap4 = new HashMap<>();
+        hashMap4.put("category", "Power Saving");
+
+        HashMap<String, String> hashMap5 = new HashMap<>();
+        hashMap5.put("category", "Sign Out");
+
+
+        listMenu.add(hashMap1);
+        listMenu.add(hashMap2);
+        listMenu.add(hashMap3);
+        listMenu.add(hashMap4);
+        listMenu.add(hashMap5);
+
+        mDrawerList.setItemChecked(0, true);
+        mDrawerList.setSelection(0);
+        mDrawerLayout.closeDrawer(mDrawerMenu);
+        mDrawerList.setAdapter(new MenuListAdapter(getApplicationContext(), listMenu, 0));
+        enableSlideMenu();
+    }
+
+    public void displayView(int tabIndex) {
+        mDrawerLayout.closeDrawer(mDrawerMenu);
+        switch (tabIndex) {
+            case 0:
+                Intent intentFlash = new Intent(TestColorActivity.this, FlashPatternsActivity.class);
+                startActivity(intentFlash);
+                break;
+            case 1:
+                Intent intentColor = new Intent(TestColorActivity.this, ColorsActivity.class);
+                startActivity(intentColor);
+                break;
+            case 2:
+                Intent intentRingtones = new Intent(TestColorActivity.this, RingtonesActivity.class);
+                startActivity(intentRingtones);
+                break;
+            case 3:
+                Intent intentWarning = new Intent(TestColorActivity.this, WarningActivity.class);
+                startActivity(intentWarning);
+                break;
+            case 4: // log out
+                firebaseAuth.signOut();
+                SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove("email");
+                editor.remove("password");
+                editor.apply();
+
+                Intent intentLogin = new Intent(TestColorActivity.this, LoginActivity.class);
+                startActivity(intentLogin);
+                break;
+        }
+
+        finish();
+
+    }
+
+    public class MenuListAdapter extends BaseAdapter {
+
+        private Context mContext;
+        private LayoutInflater inflater = null;
+        ArrayList<HashMap<String, String>> localList;
+        int selectedPosition;
+
+        public MenuListAdapter(Context context, ArrayList<HashMap<String, String>> localList, int selectedPosition) {
+            this.mContext = context;
+            this.localList = localList;
+            this.selectedPosition = selectedPosition;
+            inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return localList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View view, ViewGroup viewGroup) {
+            MenuViewHolder holder;
+
+            view = inflater.inflate(R.layout.layout_menulist_row, null);
+            holder = new MenuViewHolder(view);
+            view.setTag(holder);
+
+            if (position == selectedPosition) {
+                holder.rlMenuItem.setBackgroundColor(getResources().getColor(R.color.gray_selected));
+            } else {
+                holder.rlMenuItem.setBackgroundColor(getResources().getColor(R.color.transparent));
+            }
+
+            holder.txtMenuTitle.setText(localList.get(position).get("category"));
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedPosition = position;
+
+                    switch (position) {
+                        default:
+                            displayView(position);
+                            break;
+                    }
+                }
+            });
+
+            return view;
+        }
+
+    }
+
+    static class MenuViewHolder {
+
+        @BindView(R.id.rlMenuItem)
+        LinearLayout rlMenuItem;
+        @BindView(R.id.menu_title)
+        TextView txtMenuTitle;
+
+        public MenuViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    public void enableSlideMenu() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    public void disableSlideMenu() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
 
 }

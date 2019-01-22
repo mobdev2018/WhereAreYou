@@ -52,7 +52,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".FlashPatternsActivity" />
         <activity android:name=".ColorsActivity" />
-        <activity android:name=".TestColorActivity" />
+        <activity android:name=".TestColorActivity">
+
+        </activity>
         <activity
             android:name=".WarningActivity"
             android:screenOrientation="portrait">

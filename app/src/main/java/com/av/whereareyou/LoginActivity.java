@@ -2,24 +2,17 @@ package com.av.whereareyou;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.ContentObserver;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -84,38 +77,38 @@ public class LoginActivity extends Activity {
 
         //authenticate user
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        progressBar.setVisibility(View.GONE);
-                        if (!task.isSuccessful()) {
-                            // there was an error
-                            if (password.length() < 6) {
-                                etPassword.setError(getString(R.string.minimum_password));
-                            } else {
-                                Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-                            }
+                    progressBar.setVisibility(View.GONE);
+                    if (!task.isSuccessful()) {
+                        // there was an error
+                        if (password.length() < 6) {
+                            etPassword.setError(getString(R.string.minimum_password));
                         } else {
-                            Toast.makeText(LoginActivity.this, "Login Successful!, Start tracking!", Toast.LENGTH_LONG).show();
-
-                            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("email", email);
-                            editor.putString("password", password);
-                            editor.apply();
-
-                            Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
-                            startActivity(intent);
-                            finish();
+                            Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                         }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Login Successful!, Start tracking!", Toast.LENGTH_LONG).show();
+
+                        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("password", password);
+                        editor.apply();
+
+                        Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
-                }).addOnFailureListener(LoginActivity.this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-                Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-            }
+                }
+            }).addOnFailureListener(LoginActivity.this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                }
         });
     }
 

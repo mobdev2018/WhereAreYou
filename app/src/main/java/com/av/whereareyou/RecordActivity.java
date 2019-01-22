@@ -95,13 +95,15 @@ public class RecordActivity extends Activity {
 
     @OnClick(R.id.btn_test)
     public void gotoTestMode(View view) {
-        droidSpeech.closeDroidSpeechOperations();
+        if (droidSpeech != null) {
+            droidSpeech.closeDroidSpeechOperations();
+        }
         Intent intent = new Intent(RecordActivity.this, TestModeActivity.class);
         startActivity(intent);
     }
 
     private void startRecord() {
-        droidSpeech = new DroidSpeech(this, null);
+        droidSpeech = new DroidSpeech(getBaseContext(), null);
         droidSpeech.setOnDroidSpeechListener(new OnDSListener() {
             @Override
             public void onDroidSpeechSupportedLanguages(String currentSpeechLanguage, List<String> supportedSpeechLanguages) {
